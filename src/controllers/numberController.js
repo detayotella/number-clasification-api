@@ -6,14 +6,13 @@ export const classifyNumber = async (req, res) => {
         const { number } = req.query; 
         const num = parseInt(number, 10); 
 
-        if (isNaN(num)) {
-            return res.status(400).json({
-                number: "alphabet", 
-                error: true
-            })
+        // Convert to a number and check if it's a valid integer
+        const parsedNumber = Number(number);
+        if (!Number.isInteger(parsedNumber)) {
+            return res.status(400).json({ number: "alphabet", error: true });
         }
 
-        const funFactResponse = await axios.get(`http://numbersapi.com/${num}/math`); 
+        const funFactResponse = await axios.get(`http://numbersapi.com/${parsedNumber}/math`); 
         const funFact = funFactResponse.data; 
 
         res.status(200).json({
